@@ -1,5 +1,13 @@
 // messageHandler/index.js - FitGenius Backend Principal
-const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
+const { OpenAI } = require("openai");
+
+// Configuration OpenAI (compatible avec Azure)
+const openAIClient = new OpenAI({
+    apiKey: process.env.AZURE_OPENAI_KEY,
+    baseURL: `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${process.env.GPT35_DEPLOYMENT_NAME}`,
+    defaultQuery: { 'api-version': '2024-02-01' },
+    defaultHeaders: { 'api-key': process.env.AZURE_OPENAI_KEY }
+});
 
 // Configuration Azure OpenAI
 const openAIClient = new OpenAIClient(
@@ -426,4 +434,5 @@ async function handleTestMessage(body) {
         response: response,
         timestamp: new Date().toISOString()
     };
+
 }
